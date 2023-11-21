@@ -1,0 +1,334 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : pUserLimit
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x16e6899301a3e28a
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAADAJc3yysI8Aq1u9XomLSCvNj6YHjNyYq0Irx552sFx0RXk5AElNI5hIWCI92//wOLz8JAEL8+VnVSNtvw7UKSEm9MAMvec
+  type_code : 31
+  p_codes :
+   -
+     internal_properties : CAAAAAgAAACdV0jDY2l4MtXm48xQex5ftSfmUL6LH9cFtK/yDNHJ2SdSECRlnv1tNgVjqqCOA+RFSOhopr5ni5+mxSY/Af1V3CApVFAZOQuhAxftHWtnu2qQ6cgJHGNikSGiHSbCcmFwiIwapYoM6O7AYTo=
+     code : |1+
+      gsFileName is string = <§@11c2daf1002db5be0000§>
+      
+      HClose("")
+      
+      HSetREP(False)
+      
+      // Custom management of locks
+      HOnError(gsFileName,hErrLock,"")
+      
+      IF ErrorOccurred THEN
+      	Error(<§@11c2daf1002db5be0001§>,<§@11c2daf1002db5be0002§> + ErrorInfo())
+      END
+      
+      
+      //Managing locks
+      HMode(hModeMulti) 			// Multi-user mode
+      HOnError(gsFileName,hErrAll,"")
+      
+     type : 720896
+  procedures :
+   -
+     name : SetFilePath
+     procedure_id : 1650157577958646410
+     type_code : 15
+     code : |1+
+      //SetFilePath Procedure
+      //
+      //The SetFilePath procedure is used to define the path that will contain the files used by the limit regarding the number of users.
+      //The path of the files must be shared and accessible from all the computers.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = SetFilePath(sFilePath)
+      //
+      //Parameters:
+      //
+      //<Result>: Boolean
+      //True if the path was assigned, False otherwise.
+      //
+      //<sFilePath>: Character string
+      //The shared directory where the files for the limit regarding the users will be created
+      //
+      //Example:
+      //
+      //// Define the path of the files
+      //bRes = SetFilePath(sFilePath)
+      
+      PROCEDURE SetFilePath(sFilePath)
+      
+      // Checks the directory existence
+      IF fDirectoryExist(sFilePath) = False THEN
+      	
+      	// The directory does not exist, let's create it
+      	IF YesNo(StringBuild(<§@11c2daf1002db5be0003§>,sFilePath)) THEN
+      		
+      		// Create the directory
+      		IF NOT fMakeDir(sFilePath) THEN
+      			Error(<§@11c2daf1002db5be0004§>,<§@11c2daf1002db5be0002§> + ErrorInfo())
+      			RESULT False		
+      		END
+      		
+      	ELSE
+      		
+      		RESULT False
+      		
+      	END
+      END
+      
+      // Save the path of the files
+      ModifyRegistry(<§@11c2daf1002db5be0005§>,sFilePath)
+      pPrivate.gsFileDirectory = sFilePath
+      
+      // Checks the existence of the file
+      HChangeDir("*",pPrivate.gsFileDirectory)
+      
+      IF NOT HFileExist(gsFileName) THEN
+      	CreateFile()
+      END
+      
+      RESULT True
+      
+     type : 458752
+   -
+     name : MaxUsers
+     internal_properties : CAAAAAgAAAAkb8icl37fHPE0ub0rcfF3fW/SJcCk6MjCkNpYgs627ju0Dskbr5l+QwvZE10I1NJkIsMfmK8od/Aj/hKGt9N9gobIBmYzcCub8wF0bh46brV3ajITL739rV9LBGctjyqlTm1O/C6Q+uKW+VWO6VtiyKc9x+xvSdVaonAgN23t0y40
+     procedure_id : 1650157577958711946
+     type_code : 15
+     code : |1+
+      //// Syntax:
+      //MaxUsers Procedure
+      //
+      //The MaxUsers procedure is used to retrieve or define the maximum number of connected users.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = MaxUsers([<nNumberUser>])
+      //
+      //Parameters:
+      //
+      //<Result>: Boolean or integer
+      //If nNumberUser is specified, the function returns True if the assignment is successful, False otherwise.
+      //If nNumberUser is not specified, the function retruns the maximum number of users.
+      //
+      //Example:
+      //
+      //// Retrieve the maximum number of connected users
+      //nNbUsers = MaxUsers()
+      //
+      //// The maximum number of users is set to 5
+      //bRes = MaxUsers(5)
+      
+      PROCEDURE MaxUsers(nNbUser=-1)
+      
+      nNumberConnectedUsers is int
+      i is int
+      
+      // The parameter is not passed, renturn the maximum number of users
+      IF nNbUser = -1 THEN
+      	RESULT pPrivate.MAX_USER	
+      END
+      
+      // Assign the number of users
+      pPrivate.MAX_USER = nNbUser
+      
+      // Retrieve the numbers of connected users
+      nNumberConnectedUsers = GetNumberConnectedUsers()
+      
+      // If connected users are found, ask to disconnect them
+      IF nNumberConnectedUsers > 0 THEN
+      	Error(<§@11c2daf1002db5be0006§>)
+      	RESULT False
+      END
+      
+      // Re-create the file
+      CreateFile()
+      
+      
+      FOR i = 1 TO nNumberConnectedUsers
+      	// Locks the record
+      	HRead(gsFileName,i,hLockWrite)
+      	
+      END
+      
+      RESULT True
+      
+     type : 458752
+   -
+     name : Connection
+     procedure_id : 1650157577958777482
+     type_code : 15
+     code : |1+
+      // Summary: Connects a user if available space
+      // Syntax:
+      // [ <Result> = ] Connection ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	Undefined type: <specify the possible values as well as their interpretation>
+      //
+      // Example:
+      // Indicate an example.
+      //
+      PROCEDURE connection()
+      
+      HClose("")
+      
+      IF GetNumberConnectedUsers() < HNbRec(gsFileName) THEN
+      
+      	RESULT Connected()
+      ELSE
+      	RESULT False	
+      END
+      
+      
+     type : 458752
+   -
+     name : Disconnection
+     procedure_id : 1650157577958843018
+     type_code : 15
+     code : |1+
+      //Disconnection procedure
+      //
+      //The Disconnection procedure is used to disconnect an application (when it is closed) and to free some space for another application.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = Disconnection()
+      //
+      //
+      //Parameters:
+      //
+      //<Result>: Boolean
+      //True if the function was successful, False otherwise
+      //
+      //
+      //Example:
+      //
+      //// Disconnect the application
+      //Disconnection()
+      
+      PROCEDURE Disconnection()
+      
+      i is int
+      
+      
+      FOR i = 1 _TO_ pPrivate.MAX_USER
+      	HRead(gsFileName,i,hLockWrite)
+      	
+      	// Was the lock successful?
+      	IF HErrorLock() = True THEN
+      		
+      		RESULT HUnlockRecNum(gsFileName,i)
+      	END
+      	
+      END
+      
+      RESULT True
+      
+     type : 458752
+   -
+     name : GetNumberConnectedUsers
+     procedure_id : 1650157577958908554
+     type_code : 15
+     code : |1+
+      // Syntax:
+      //[ <Result> = ] GetNumberConnectedUsers ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	integer:      // 	None
+      
+      PROCEDURE GetNumberConnectedUsers()
+      
+      Subscript is int=0
+      NbConnect is int=0
+      
+      // Force the opening of the file
+      HOpen(gsFileName)
+      
+      // Ask to manage the lock errors manually
+      HOnError(gsFileName,hErrLock,"")
+      
+      IF HFileExist(gsFileName) THEN 
+      	//Find the locked records
+      	Subscript=1
+      	LOOP
+      		// Try to lock the file
+      		HRead(gsFileName,Subscript,hLockWrite)
+      		Subscript++
+      				
+      		IF HErrorLock() THEN
+      			// Unable to lock, one more connected user
+      			NbConnect++
+      		ELSE			
+      			
+      			IF HOut() THEN
+      				// The end of file was reached, end of process
+      				BREAK
+      			ELSE
+      				// A record was locked, unlock it... 
+      				HUnlockRecNum(gsFileName)
+      			END
+      		END
+      		
+      	END
+      END
+      
+      RESULT NbConnect
+      
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : pLimitationUtilisateurs
+resources :
+ string_res :
+  identifier : 0x11c2daf1002db5be
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : GROUPS
+     index : 0
+   -
+     text :
+      en-GB : Unable to start the management of users
+     index : 1
+   -
+     text :
+      en-GB : "Details: "
+     index : 2
+   -
+     text :
+      en-GB : "The <%1> directory does not exist, do you want to create it?"
+     index : 3
+   -
+     text :
+      en-GB : An error occurred while creating the directory
+     index : 4
+   -
+     text :
+      en-GB : Files
+     index : 5
+   -
+     text :
+      en-GB : Disconnect the users
+     index : 6
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ

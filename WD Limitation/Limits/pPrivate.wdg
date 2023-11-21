@@ -1,0 +1,361 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : pPrivate
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x16e6899301b6e4ad
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAABCYs+lg13nYbXDiMM0TO4kPwdzgdR7IWRt9GJxf9eDXP2N0hoaFB5O8JiC94hbeBQbcPQS5R7Z+gAiZACZB0nzT2tx9528tiWZaZ4MIufzdZsNlnr8Csttk9bh5OaVFU/btW9jMhugumskYiMRYdLJM8c=
+  type_code : 31
+  p_codes :
+   -
+     code : |1+
+      CONSTANT
+      	
+      	CS_PASSWORD = "CheckKeyword"	// Code used to check the validity of the registry information
+      	
+      END
+      
+      MAX_USER is int = 5		// Maximum number of users
+      
+      // Network path of the files 
+      gsFileDirectory is string	 = RegistryQueryValue(CS_REGISTRY_KEY + ProjectInfo(piProjectName),<§@11c1bcba000196820000§>)
+     type : 720896
+  procedures :
+   -
+     name : ReadRegistry
+     procedure_id : 1650157577959892141
+     type_code : 15
+     code : |1-
+      // Summary: Reads a value in the registry
+      // Syntax:
+      //[ <Result> = ] ReadRegistry (<sKey>)
+      //
+      // Parameters:
+      //	sKey: Key to read
+      // Return value:
+      // 	string: <specify the possible values as well as their interpretation>
+      //
+      // Example:
+      // Indicate an example.
+      //
+      FUNCTION ReadRegistry(sKey)
+      
+      // Variables
+      sResult       is string
+      sRegistryPath is string
+      bOk             is boolean
+      
+      sRegistryPath = CS_REGISTRY_KEY + ProjectInfo(piProjectName)
+      
+      sResult = RegistryQueryValue(sRegistryPath, sKey, bOk)
+      
+      IF bOk THEN
+      	RESULT sResult
+      ELSE
+      	RESULT ""
+      END
+     type : 458752
+   -
+     name : ModifyRegistry
+     internal_properties : CAAAAAgAAADoK0t1qB8Tq+PotoQ4/nm66+cGYAJqoGaYCWZ7jNHBpFdbEDn+6azUztWlrYPJKc+EOhGSzpgbqaz0+SidKPuNl4fBtFEGIuC2gcOsoNZk4qhOIMFb+9ddeEppfnBe1e4IcG0orrn4y0aMRnEns9fMvcKTICTvvLS2aP/k4RUlQwgLTj10rLuV11n/c1kOqhEeU/wqP+qH/VXTJXigZbGtXA==
+     procedure_id : 1650157577959957677
+     type_code : 15
+     code : |1+
+      // Summary: Modifies a value in the registry
+      // Syntax:
+      // [ <Result> = ] ModifyRegistry (<Key>, <Value>)
+      //
+      // Parameters:
+      // 	Key: Key to modify
+      // 	Value: Value to write
+      // Return value:
+      // 	Undefined type: <specify the possible values as well as their interpretation>
+      //
+      // Example:
+      // Indicate an example.
+      //
+      PROCEDURE ModifyRegistry(Key,Value)
+      
+      // Variables
+      sRegistryPath is string
+      
+      sRegistryPath = CS_REGISTRY_KEY + ProjectInfo(piProjectName)
+      
+      RegistrySetValue(sRegistryPath, Key, Value)
+      IF ErrorOccurred THEN
+      	RegistryCreateKey(sRegistryPath) 	
+      	RESULT RegistrySetValue(sRegistryPath, Key, Value) 
+      ELSE
+      	RESULT True
+      END
+      
+     type : 458752
+   -
+     name : LimitUseDuration
+     procedure_id : 1650157577960023213
+     type_code : 15
+     code : |1+
+      // Syntax:
+      //[ <Result> = ] LimitUseDuration ([<NbDays>[, <bChangeDate>]])
+      //
+      // Parameters:
+      //	NbDays: Number of days before lock
+      //	bChangeDate: <specify the role of bChangeDate>
+      // Return value:
+      // 	Undefined type:  // 	None
+      PROCEDURE LimitUseDuration(NbDays = 30,bChangeDate = False)
+      
+      
+      //If ChangeDate=True then change the limit date to NbLimitDays
+      
+      // Variables
+      LimitOK is boolean = True 	//to False if the limit date is exceeded
+      Remainder is int   			//To calculate the remaining time
+      Caption is string 			//Caption associated with this window in the library
+      CaptionString is string 	//New caption associated with this window in the library
+      DateDay is int   		//To calculate the remaining time
+      sCheck is string	//code used to check the duration
+      
+      //Read the current caption of the window
+      Caption=ReadRegistry(<§@11c1bcba000196820001§>)
+      
+      IF Caption[[TO 11]]<><§@11c1bcba000196820002§> OR bChangeDate THEN 
+      	
+      	//First use, or change of limit date
+      	IF NbDays=-1 THEN//remove the limit 
+      	
+      		DateDay=NbDays
+      	
+      	ELSE//REF the integer corresponding to the end date
+      	
+      		DateDay=DateToInteger(Today())+NbDays
+      	
+      	END
+      	
+      	CaptionString=<§@11c1bcba000196820003§>+DateDay
+      	
+      	IF ModifyRegistry(<§@11c1bcba000196820001§>,CaptionString)=False OR NbDays=0 THEN
+      	
+      		LimitOK=False
+      	
+      	ELSE
+      	
+      		// Code used to check the date
+      		ModifyRegistry(<§@11c1bcba000196820004§>,Crypt(NumToString(DateDay),CS_PASSWORD,cryptSecure,True))
+      	
+      		Remainder=NbDays
+      		
+      	END
+      	
+      	RESULT True
+      	
+      ELSE//
+      	
+      	Remainder=IntegerPart(Val(NoSpace(Caption[[15 TO]])))
+      	
+      	sCheck = ReadRegistry(<§@11c1bcba000196820004§>)	
+      	
+      	IF Val(Uncrypt(sCheck, CS_PASSWORD, cryptSecure, True))<>Remainder THEN
+      	
+      		// Lock the application
+      		RESULT 0	
+      	
+      	END
+      	
+      	IF Remainder<>-1 THEN//Current limit
+      	
+      		Remainder=Remainder-DateToInteger(Today())
+      	
+      		IF Remainder<=0  THEN
+      			LimitOK=False
+      			
+      			//Can no longer be used from now on
+      			CaptionString=<§@11c1bcba000196820003§>+0
+      			
+      			ModifyRegistry(<§@11c1bcba000196820001§>,CaptionString)
+      		END
+      		
+      	ELSE //Limit removed
+      		LimitOK=True
+      	END
+      END
+      
+      IF LimitOK THEN
+      	RESULT Remainder
+      ELSE
+      	RESULT 0
+      END
+      
+     type : 458752
+   -
+     name : CreateFile
+     internal_properties : CAAAAAgAAAB+Qhj3C/SKPPotaOis2BsLEWbrL5FEMXpuT/1/a0vjYXx3OozgBco3RNyIl/zdJ6wHr7TooWWOPB+34mRvKeZhD7PDauaMPXaSSsIUsMDHmGbxTeizY0BVQYSKIbTzkYh6oYTNnIvXocEy9aS/qj/igTM2qViTecLjSoDfOQ5U73GAT0K0ng7jtlEVhkyYk5Sv7nID
+     procedure_id : 1650157577960088749
+     type_code : 15
+     code : |1+
+      // Syntax:
+      //CreateFile ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      
+      PROCEDURE CreateFile()
+      
+      WHEN EXCEPTION IN 
+      	HCreation(GROUPS) 
+      DO
+      	Error("Unable to access the 'Groups' file.", HErrorInfo()) 
+      	RETURN
+      END
+      
+      i is int
+      
+      
+      FOR i = 1 _TO_ MAX_USER
+      	
+      	GROUPS.Text = <§@11c1bcba000196820005§> + i
+      	HAdd(GROUPS)
+      	
+      END
+      
+      
+     type : 458752
+   -
+     name : GetNumberConnectedUsers
+     procedure_id : 1650157577960154285
+     type_code : 15
+     code : |1+
+      // Syntax:
+      //[ <Result> = ] GetNumberConnectedUsers ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	integer:  // 	None
+      
+      PROCEDURE GetNumberConnectedUsers()
+      
+      nSubscript is int
+      nNbConnectedUsers is int
+      
+      
+      //Count the number of locked records
+      FOR nSubscript=1 _TO_ MAX_USER
+      	// Attempt to lock
+      	HRead(pUserLimit.gsFileName,nSubscript,hLockWrite)
+      	// Was the lock successful?
+      	IF HErrorLock() = True THEN
+      		nNbConnectedUsers++
+      	ELSE
+      		
+      		HUnlockRecNum(pUserLimit.gsFileName)
+      		
+      	END
+      END
+      
+      
+      RESULT nNbConnectedUsers
+      
+     type : 458752
+   -
+     name : Connected
+     procedure_id : 1650157577960219821
+     type_code : 15
+     code : |1-
+      // Syntax:
+      //[ <Result> = ] Connect ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	integer:   // 	None
+      
+      PROCEDURE Connected()
+      
+      nSubscript is int=0
+      
+      // Open the file
+      HOpen(pUserLimit.gsFileName)
+      
+      // Manage the lock manually on the file 
+      HOnError(GROUPS,hErrLock,"")
+      IF ErrorOccurred THEN
+      	Error(ErrorInfo(errMessage))
+      END
+      
+      IF HFileExist(pUserLimit.gsFileName)=False
+      // File not found, create the file for connection limit
+      HCreation(pUserLimit.gsFileName)
+      
+      // Add the default records
+      nMaxUser is int = MAX_USER
+      FOR nSubscript=1 TO nMaxUser
+      	GROUPS.Text=<§@11c1bcba000196820005§>+nSubscript
+      	HAdd(pUserLimit.gsFileName)
+      END
+      END
+      
+      //Find an unlocked record
+      FOR nSubscript=1 _TO_ MAX_USER
+      	// Attempt to lock
+      	HRead(pUserLimit.gsFileName,nSubscript,hLockWrite)
+      	// Was the lock successful?
+      	IF HErrorLock()=False THEN
+      		// Yes, a record was locked, therefore exit from the lock loop
+      		BREAK
+      	END
+      END
+      
+      IF HOut(pUserLimit.gsFileName) THEN
+      	//No free record
+      	RESULT 0
+      ELSE
+      	//A free record is found
+      	RESULT nSubscript
+      END
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : pPrivée
+resources :
+ string_res :
+  identifier : 0x11c1bcba00019682
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : Files
+     index : 0
+   -
+     text :
+      en-GB : ID1
+     index : 1
+   -
+     text :
+      en-GB : ParameterID
+     index : 2
+   -
+     text :
+      en-GB : "ParameterID: "
+     index : 3
+   -
+     text :
+      en-GB : ID2
+     index : 4
+   -
+     text :
+      en-GB : "Connection "
+     index : 5
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ

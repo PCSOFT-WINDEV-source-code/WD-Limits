@@ -1,0 +1,125 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : Win_NumberUsers
+ major_version : 28
+ minor_version : 0
+ type : 2
+ description : ""
+ subtype : 0
+window :
+ name : Win_NumberUsers
+ identifier : 0x26e6898f053dd461
+ internal_properties : CAAAAAgAAACNnxuBhAAOWOkO09IMSs10RY5BCoj1nhKIiwiBTOwL5VUe5Jtnm9Gz8AdRGFjUWIVTWX6/xiLTjYahQbrMH7jqPNQRlNUneqcsv688nTMBkyLLvaendOJ2lFw7j+4xqQJq5yvhWXODXH5fC1JeWRqaVJudgscKHez7Xdzke64tTX/U8tIEOnrhcYkPYJIQC9obVKMQXeFfLPa8pHGrds+Av4AjHrn6YhIfUMCmP6XuS1b/PzmuK5Qp2b2G41Cz8rabPT7Zz1+OawB829fi2JTW3828sTBalsV2PAxza404UiD4Z3G8kIapx3QydyAoUhtTnx7OiKVxzrpekRu1HB6Pe16VfIR62D88+5t6SQqHNYmkqlv8qOd7weGMQONz1Ny/zB2M9exoLoVUVvv6H+5IugNUr0bZU5YAWUFOygrUT2BpabiN5BejDirMSKTt8JMHapFMdOQJ5OHLAPPLmo/aG45GvzLe7Urr12T7IkKL0ul05FADXsygQyJiF9J2J2Z49W4gvQi41nRz6SLw/o8gIxh3xuNVKKCUCD4JsqSX6FFikr3QLZ3Whxgy+SH8WTKyo+dIuvyiaBP8uTlOmbuMSUkMPCRVmNUDxoNunehtPA7fa2YIMwFn0LXBbIlCMc6omMSRMGM0PzO/j819fmNR0NZ/nbjViNuEdmGdbC+kFRdLFea5txhCCUNeHWnltpQrAmhFW+roLlpt8ncewgfJyYIP8ot60se6WpZPgu0iKVnImqxP2lQOF9/RjeHVqpj6WOa27mu/OAP0Y8XJKnfJ3YKO
+ properties :
+  width : 252
+  height : 129
+  widthClient : 250
+  heightClient : 97
+ controls :
+  -
+    name : Static1
+    identifier : 0x26e6898f053ed461
+    internal_properties : CAAAAAgAAAANlnrhB6Xb5/vFAfMUrY74igiU/Aat03QnEIrodHWPYNcobldR2RtlleefjgsllPtTqL4aD1WukzEeKkP9uIg4GxvwrG1lUfVzk+UtMN57FvtsJ/rxWLTFPcqtHU22yfcJ9QTtEDrKGE55RTos8pbddEefkqfWo5lv/k2Xg+B1nsJxZ043tMqyYQxjIIrbOFHjyF97vpEnDaEBt9tItmL0iI4+OwjFw7GXXqTwkZXCzfCCG12hL7ms5K3ehK5H0y6QsPssCsxgewMiJpnf0JmYoyC3g9+8iMNujJCjVD1wyD3o8+HhmHhuPbyZHsB4ZieReeitKEEARQhJSO+ATjUERDI3vrKbxlXF1kO0vy4Jcua72P0tQEBtPBRKxhKghW5saIc02z2eyVQ2xlc9iKT2VMJIfcrngUf2GWTdB5699iRBg0rQ9wy7JJnOjHFohYAXgbCGk2clObaSS8FLcEJ87OfGb56xkDljK7OmjBMczcviZZJ1yxs0DstHiH3G3UBORhhNc0Z6NLe2qymaSJmYypc8nqo=
+    properties :
+     x : 18
+     y : 21
+     width : 226
+     height : 31
+    type : 3
+    code_elements :
+     type_code : 2
+     p_codes :
+      -
+        code : |1-
+         
+        type : 18
+  -
+    name : Button1
+    identifier : 0x26e6898f053fd461
+    internal_properties : CAAAAAgAAABjp+CVpFLaHSWTVEVnP0Y7ayTEKw1KcYj5mQ/xs90hrY1WpZFicJuhOCnUu8GxcYubIV9oBLm9Q47LlpXb645/83sQvMyz1oYI+8w0Bx24cp4u09rWMZk0igAWtzvZBVaBunEOYOgH2ofz33g85q+FmefEE2OaFiQReFO0N1sQxIFSDrRaWGQ4NOjyM/2PUt2apxqvtucwpdsYF9rXK6cTbrDoUGQ2IDQgMEa2y/HDHAxu8fg/i5Pm1e6Dx4o0p+odIIB0O4kNSEFbQcERuCJQlBv0NX0XMxhALz+lnXOxU7JPqITZLnrkjJ8TTw2+MU88xCH2Bz3jpnTzwvl1osftLaIelivieXJ/S8GsgMTXW8ZX0Gdhf1S45RgTuMbdBKeipU6YPefYLBG5q5hyVclXXOGPrnsm2dUV+/G5Q1D8ohPMibDhk8tOLbwnlB2FjH0z1FyfFwTSyOM+y49J1zl3fFZH3cBQa9sqYE5TqTc5pNdaitCvvKh0iEP+LB+yZeS4nLK3L3C+Fa4qNK8ss6rZPf8T+rsWn298wHgeVY+CVwbmsc75SkFAORrvBLEEsXz5KRfMByxMH4oj3+PU/UqvPdD4At0WLhpoBhRseFUS/yoPiiSKIfYMgYxYZz2s5iHokqzKnRIZDmtjP/vw4wDa1MENL4U+nwbZS/LWPlMSVf0m0lCv17B8vQowdBupogpiDrdD1yDxmloQUQ0RTMrJvSr1lhXAZ1CttihMH9ciF8dGRLgD+tVffOoWNCc5ppBNZzKfykmjoy66iO/NuFW2PsDSd+gDv7EQOK3oeOMCcDh4wok1UKIAwI+7Uqm3GH5eP44akOws+b2LGWvrjgg6aQeMcrIaJLPqIZAwkNjcymr+FhLN2nZ3oi67w0onbOZMyjTxhEz5m4wr80U2b4qyZ07e
+    properties :
+     x : 159
+     y : 65
+     width : 80
+     height : 24
+    type : 4
+    code_elements :
+     type_code : 4
+     p_codes :
+      -
+        code : |1+
+         
+         // Disconnect
+         pUserLimit.Disconnection()
+         
+         Close()
+        type : 18
+      -
+        type : 161
+        enabled : false
+ menu :
+  name : _Menu
+  identifier : 0x256730db92d8469f
+  internal_properties : CAAAAAgAAACCv199ARoPUfG3WAPSG9eefhOOjWMQrs8CrX6cGGGJPoSHWBq4PXhStOWc1YnAZMZ5+EFR1WTDn8CTOTiyLnXPpAR5X8rsRkPZrm1yZeYDDt4kRzDPLbUf4Sh/mD3kd1D8V2drCFLmjeQhgpw7GKGwHRga+ZdjSqXGIC3LD1RracZ230hOmUJTj+ABDW4IHrw4PflmVGgp8E9KnAf/gselRrzEY90l3Cr9N00QijFYYrbrl4qF4kdim1YX6jYT4ezQhbJsU84ENZsxzq+o0JVHYQ8rxck600VhGV04/ao=
+  options : []
+ languages :
+  - en-GB
+ popup_menus : []
+ message_bar :
+  internal_properties : CAAAAAgAAAAiWtq7bP2hHmqB351LCtgjC5WjYYyPspKyGoNdHC2cGItTM1RAa4O8coWWh7zotfAJPoUlq02zRA+QOgo3sgf+J6/E+hKXbamqldD9qA8iZJbmoZFmEUCZgf4gQLAV
+ actionbar : {}
+ code_elements :
+  internal_properties : CAAAAAgAAABbPCghmUOMgSjD2eZxpi9796musCfK52s8Vnuz6S8vmuMBNrqMJELRjlDTMu6tf6ocMHwQIU1OiK+GWZMmbirwmks/Xnauh44ZMQ==
+  type_code : 1
+  p_codes :
+   -
+     code : |1-
+      // Syntax:
+      //Win_NumberUsers ()
+      //
+      // Parameters:
+      //	None
+      // Return value:
+      // 	None
+      
+      IF pUserLimit.Connection() = False THEN
+      	
+      	Error(<§$0000§>)
+      	Close()
+      	
+      END
+   -
+     type : 180
+     enabled : false
+   -
+     type : 230
+     enabled : false
+   -
+     code : |1-
+      
+     type : 40
+   -
+     type : 11
+   -
+     type : 12
+   -
+     type : 17
+   -
+     type : 13
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : FenNombreUtilisateurs
+resources :
+ string_res :
+  identifier : 0x11c3100100060c6b
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+  strings :
+   -
+     text :
+      en-GB : The maximum number of connected users has been reached
+     index : 0
+custom_note :
+ internal_properties : CAAAAAgAAAC68/W0/adbG0nFCRhrE42B5HRnbDzVHaz86sSQyxlBk7I=
+rad :
+ internal_properties : CAAAAAgAAABoAN7PLpwJW3EiA7WVZdCA5EwrCA1rvutcDHooMWKe

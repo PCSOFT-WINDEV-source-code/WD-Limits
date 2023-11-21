@@ -1,0 +1,134 @@
+#To edit and compare internal_properties, use WINDEV integrated tools.
+#Internal properties refer to the properties of controls in windows, reports, etc.
+info :
+ name : pDurationLimit
+ major_version : 28
+ minor_version : 0
+ type : 7
+ description : ""
+ subtype : 0
+procedure_set :
+ identifier : 0x16e689920192de92
+ internal_properties : CAAAAAgAAABGLu41kG7fjQV3iS4F72qmnKaNh5694reolNKIW0iw
+ code_elements :
+  internal_properties : CAAAAAgAAAA0DdNiFVXZlnbfn4oUt+6jk6Pwd2vh6CNOuaZD7fcMtLSq4WA97zT0XH+655rPTvl8ZYvtq1jrNGU6EHzuvlXgJJpWDLCZ3Rw=
+  type_code : 31
+  p_codes : []
+  procedures :
+   -
+     name : IsLimited
+     procedure_id : 1650157573662564002
+     type_code : 15
+     code : |1+
+      //IsLimited Procedure
+      //
+      //The IsLimited procedure is used to find out the amount of time left before the application is locked.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = IsLimited()
+      //
+      //Parameters:
+      //
+      //<Result>: Integer
+      //Number of days left before the application is locked.
+      //0 if the license is corrupted
+      //-1 if the application is unlocked.
+      //
+      //
+      //Example:
+      //
+      //// Retrieve the number of days left
+      //nNbRemainingDays = IsLimited()
+      
+      PROCEDURE IsLimited()
+      
+      // Variable
+      nTimeRemaining is int  
+      
+      // Retrieve the remaining time
+      nTimeRemaining = LimitUseDuration(*,*)
+      
+      // Return the number of remaining days to the application
+      RESULT nTimeRemaining
+      
+      
+     type : 458752
+   -
+     name : RemoveLimit
+     procedure_id : 1650157573662629538
+     type_code : 15
+     code : |1+
+      //RemoveLimit Procedure
+      //
+      //The RemoveLimit procedure is used to remove the time limit.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = RemoveLimit()
+      //
+      //Parameters:
+      //
+      //<Result>: boolean
+      //True if the function was successful, False otherwise
+      //
+      //
+      //Example:
+      //
+      //// Remove the limit
+      //bRes = RemoveLimit()
+      PROCEDURE RemoveLimit()
+      
+      // The use duration is set -1 so it can be removed
+      RESULT LimitUseDuration(-1,True)
+      
+      
+     type : 458752
+   -
+     name : LimitApplication
+     procedure_id : 1650157573662695074
+     type_code : 15
+     code : |1+
+      //LimitApplication procedure
+      //
+      //The LimitApplication procedure is used to define a time limit for an application.
+      //
+      //
+      //Syntax:
+      //
+      //<Result> = LimitApplication (<Number of Days>)
+      //
+      //
+      //Parameters:
+      //
+      //<Result>: boolean
+      //True if the function was successful, False otherwise
+      //
+      //<Number of Days>: integer
+      //Number of days before the application is locked
+      //
+      //
+      //Example:
+      //
+      //// The use duration is set to nNumberDays
+      //LimitApplication(nNumberDays)
+      
+      PROCEDURE LimitApplication(nNumberDays)
+      
+      
+      // The use duration is set to nNumberDays
+      RESULT LimitUseDuration(nNumberDays,True)
+     type : 458752
+  procedure_templates : []
+  property_templates : []
+ code_parameters :
+  internal_properties : CAAAAAgAAACVGQgYbalU7DKC3oH4ItDrjtcTHXXV/EuH8q0IbhyQlw==
+  original_name : pLimitationDurée
+resources :
+ string_res :
+  identifier : 0x11c2c4a60002a25c
+  internal_properties : CAAAAAgAAACm76HWfKGWp33VjXInA4cRlqArlgTTA862QGt72W2ld5Y=
+custom_note :
+ internal_properties : CAAAAAgAAABtB9HWVzrXO2+4NDRVK0vmzaNKrCKqH1DBX30lMmGZ
